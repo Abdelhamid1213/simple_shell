@@ -11,14 +11,17 @@ int main(int __attribute__((unused)) ac, char __attribute__((unused)) **av)
 {
 	char *buffer = NULL, **tokens;
 	size_t buff_size = 10;
-	int char_count, status;
+	int char_count = 1, status;
 	pid_t pid;
 
-	write(1, "$ ", 2);
-	char_count = getline(&buffer, &buff_size, stdin);
+	while (char_count == 1)
+	{
+		write(1, "$ ", 2);
+		char_count = getline(&buffer, &buff_size, stdin);
+	}
 	if (char_count == EOF)
 	{
-		perror("getline error\n");
+		perror("Error:");
 		exit(EXIT_FAILURE);
 	}
 	buffer[char_count - 1] = '\0';
