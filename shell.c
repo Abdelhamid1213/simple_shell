@@ -14,7 +14,7 @@ int main(int ac, char __attribute__((unused)) **av, char **env)
 	char *prompt = "$ ";
 
 	(void)ac;
-	
+
 	while (1)
 	{
 		printf("%s", prompt);
@@ -28,7 +28,7 @@ int main(int ac, char __attribute__((unused)) **av, char **env)
 			perror("fgets");
 			continue;
 		}
-		
+
 		command[strcspn(command, "\n")] = '\0';
 
 		if (strcmp(command, "exit") == 0)

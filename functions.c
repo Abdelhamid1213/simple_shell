@@ -9,6 +9,7 @@
 void execute_command(const char *command)
 {
 	pid_t pid = fork();
+	int status;
 
 	if (pid == -1)
 		perror("fork");
@@ -33,8 +34,5 @@ void execute_command(const char *command)
 		_exit(EXIT_FAILURE);
 	}
 	else
-	{ 
-		int status;
 		waitpid(pid, &status, 0);
-	}
 }
