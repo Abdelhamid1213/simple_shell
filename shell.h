@@ -11,7 +11,7 @@
 extern char **environ;
 
 char *_getenv(const char *env_var);
-char *get_command (char *command);
+char *get_command(char *command);
 char **tokenizer(char *str);
 void env_builtin(void);
 
