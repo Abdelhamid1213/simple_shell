@@ -1,96 +1,40 @@
 #include "shell.h"
 
 /**
- * _getenv - ..
- * @env_var: ..
- * Return: ..
- */
-
-char *_getenv(const char *env_var)
-{
-	char **env = environ;
-	int i = 0;
-	char *key;
-
-	while (env[i])
-	{
-		key = strtok(env[i], "=");
-		if (strcmp(env_var, key) == 0)
-			return (strtok(NULL, "\n"));
-		i++;
-	}
-	return (NULL);
-}
-
-/**
- * get_command - ..
+ * execute_command - ..
  * @command: ..
  * Return: ..
  */
 
-char *get_command(char *command)
+void execute_command(const char *command)
 {
-	char *path = _getenv("PATH");
-	char *token;
-	char *cmd_full;
-	struct stat st;
+	pid_t pid = fork();
 
-	token = strtok(path, ":");
-	while (token)
+	if (pid == -1)
+		perror("fork");
+
+	else if (pid == 0)
 	{
-		cmd_full = malloc(strlen(token) + strlen(command) + 2);
-		strcpy(cmd_full, token);
-		strcat(cmd_full, "/");
-		strcat(cmd_full, command);
-		if (stat(cmd_full, &st) == 0)
-			return (cmd_full);
-		free(cmd_full);
-		token = strtok(NULL, ":");
-	}
-	return (NULL);
-}
+		char *token = strtok((char *)command, " ");
+		char *args[MAX_COMMAND_LENGTH];
+		int arg_count = 0;
 
-/**
- * tokenizer - ..
- * @str: ..
- * Return: ..
- */
-
-char **tokenizer(char *str)
-{
-	char *portion;
-	char **portions = NULL;
-	int i = 0;
-	char *delim = " \n\t";
-
-	portion = strtok(str, delim);
-	while (portion)
-	{
-		i++;
-		portions = realloc(portions, i * sizeof(char *));
-		if (portions == NULL)
+		while (token != NULL)
 		{
-			perror("Realloc Tokenizer");
-			exit(EXIT_FAILURE);
+			args[arg_count] = token;
+			arg_count++;
+			token = strtok(NULL, " ");
 		}
-		portions[i - 1] = portion;
-		portion = strtok(NULL, delim);
+		args[arg_count] = NULL;
+
+		execvp(args[0], args);
+
+		perror("execvp");
+		_exit(EXIT_FAILURE);
 	}
-	return (portions);
-}
-
-/**
- * env_builtin - ..
- * Return: ..
- */
-
-void env_builtin(void)
-{
-	char **env = environ;
-
-	while (*env != NULL)
-	{
-		printf("%s\n", *env);
-		env++;
+	else
+	{ 
+		int status;
+		waitpid(pid, &status, 0);
 	}
 }

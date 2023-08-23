@@ -10,43 +10,40 @@
 
 int main(int ac, char __attribute__((unused)) **av, char **env)
 {
-	size_t buffer_size = 0;
-	char *cmd, **args, *buffer = NULL;
-	pid_t pid;
-	int status, n_chars;
+	char command[MAX_COMMAND_LENGTH];
+	char *prompt = "$ ";
 
 	(void)ac;
-
+	
 	while (1)
 	{
-		write(1, "$ ", 2);
-		n_chars = getline(&buffer, &buffer_size, stdin);
-		if (n_chars == -1)
+		printf("%s", prompt);
+		if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL)
 		{
-			write(1, "\n", 1);
-			exit(1);
-		}
-
-		if (n_chars != 1)
-		{
-			args = tokenizer(buffer);
-			if (strcmp(args[0], "exit") == 0)
-				exit(0);
-			if (strcmp(args[0], "env") == 0)
-				env_builtin();
-			pid = fork();
-			if (pid == 0)
+			if (feof(stdin))
 			{
-				cmd = get_command(args[0]);
-				if (cmd)
-					execve(cmd, args, env);
-				else
-					printf("Command not found\n");
-				exit(0);
+				printf("\n");
+				break;
 			}
-			else
-				wait(&status);
+			perror("fgets");
+			continue;
 		}
+		
+		command[strcspn(command, "\n")] = '\0';
+
+		if (strcmp(command, "exit") == 0)
+			break;
+		else if (strcmp(command, "env") == 0)
+		{
+			while (*env != NULL)
+			{
+				printf("%s\n", *env);
+				env++;
+			}
+		}
+		else
+			execute_command(command);
 	}
+
 	return (0);
 }
