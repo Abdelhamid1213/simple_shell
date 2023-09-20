@@ -1,8 +1,7 @@
 #include "shell.h"
 
 /**
- * readline - ..
- * @command: ..
+ * get_l - ..
  * Return: ..
  */
 
@@ -23,6 +22,11 @@ char *get_l(void)
 	return (buff);
 }
 
+/**
+ * tokenize - ..
+ * @line: ..
+ * Return: ..
+ */
 
 char **tokenize(char *line)
 {
@@ -46,7 +50,7 @@ char **tokenize(char *line)
 	}
 	free(lline), lline = NULL;
 
-	command = malloc(sizeof(char*) * (count + 1));
+	command = malloc(sizeof(char *) * (count + 1));
 	if (command == NULL)
 	{
 		free(line), line = NULL;
@@ -64,6 +68,12 @@ char **tokenize(char *line)
 	return (command);
 }
 
+/**
+ * exec - ..
+ * @command: ..
+ * @av: ..
+ * Return: ..
+ */
 
 int exec(char **command, char **av)
 {
@@ -73,7 +83,7 @@ int exec(char **command, char **av)
 	child = fork();
 	if (child == 0)
 	{
-		if(execve(command[0], command, environ) == -1)
+		if (execve(command[0], command, environ) == -1)
 		{
 			perror(av[0]);
 			ffree(command);
