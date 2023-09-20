@@ -75,25 +75,57 @@ char **tokenize(char *line)
  * Return: ..
  */
 
-int exec(char **command, char **av)
+int exec(char **command, char **av, int index)
 {
 	pid_t child;
 	int status;
+	char *full_cmd;
 
+	full_cmd = _getpath(command[0]);
+	if (!full_cmd)
+	{
+		p_error(av[0], command[0], index);
+		ffree(command);
+		return (127);
+	}
 	child = fork();
 	if (child == 0)
 	{
-		if (execve(command[0], command, environ) == -1)
+		if (execve(full_cmd, command, environ) == -1)
 		{
-			perror(av[0]);
+			free(full_cmd), full_cmd = NULL;
 			ffree(command);
-			exit(0);
 		}
 	}
 	else
 	{
 		waitpid(child, &status, 0);
 		ffree(command);
+		free(full_cmd), full_cmd = NULL;
 	}
 	return (WEXITSTATUS(status));
+}
+
+
+/**
+ * p_error - ..
+ * @name: ..
+ * @command: ..
+ * @index: ..
+ */
+
+void p_error(char *name, char *command, int index)
+{
+	char *idx, msg[] = ": not found\n";
+
+	idx = _itoa(index);
+
+	write(STDERR_FILENO, name, _strlen(name));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, idx, _strlen(idx));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, command, _strlen(command));
+	write(STDERR_FILENO, msg, _strlen(msg));
+
+	free(idx), idx = NULL;
 }

@@ -1,85 +1,74 @@
 #include "shell.h"
 
 /**
- * _strcpy - a function that copies the string pointed to by src,
- *           including the terminating null byte (\0),
- *           to the buffer pointed to by dest.
+ * *_strcpy - copies the string pointed to by src
+ * including the terminating null byte (\0)
+ * to the buffer pointed to by dest
+ * @dest: pointer to the buffer in which we copy the string
+ * @src: string to be copied
  *
- * @dest: destination string
- * @src: source string
- *
- * Return: dest pointer
+ * Return: the pointer to dest
  */
-
 char *_strcpy(char *dest, char *src)
 {
-	int l = 0;
-	int i;
+	int len, i;
 
-	while (src[l] != '\0')
-		l++;
+	len = 0;
 
-	for (i = 0; i <= l; i++)
+	while (src[len] != '\0')
+	{
+		len++;
+	}
+
+	for (i = 0; i < len; i++)
+	{
 		dest[i] = src[i];
+	}
+	dest[i] = '\0';
 
 	return (dest);
 }
 
 /**
- * _strcmp - a function that compares two strings
+ * _strcmp - compares two strings
+ * @s1: first string to compare
+ * @s2: second string to compare
  *
- * @s1: string 1 input to compare
- * @s2: against this other string 2
- *
- * Return: 0 if s1 and s2 are equal
- *        negative integer if the stopping character
- *                in @s1 was less than the stopping
- *                character in @s2
- *        positive integer if the stopping character
- *                in @s1 was greater than the stopping
- *                character in @s2
-*/
-
+ * Return: less than 0 if s1 is less than s2, 0 if they're equal,
+ * more than 0 if s1 is greater than s2
+ */
 int _strcmp(char *s1, char *s2)
 {
-	int i = 0, r;
-
-	while (s1[i] != '\0' && s2[i] != '\0')
+	while (*s1 == *s2)
 	{
-		if (s1[i] != s2[i])
+		if (*s1 == '\0')
 		{
-		r = s1[i] - s2[i];
-			break;
+			return (0);
 		}
-		else
-		{
-			r = s1[i] - s2[i];
-		}
-		i++;
+		s1++;
+		s2++;
 	}
-
-	return (r);
+	return (*s1 - *s2);
 }
 
 /**
- * _strlen - function that returns the length of a string.
+ * _strlen - returns the length of a string
+ * @s: string to evaluate
  *
- * @s: string to calculate the length of
- *
- * Return: length of string
+ * Return: the length of the string
  */
-
 int _strlen(char *s)
 {
-	int length = 0;
+	int i;
 
-	while (*s != '\0')
+	i = 0;
+
+	while (s[i] != '\0')
 	{
-		length++;
-		s++;
+		i++;
 	}
 
-	return (length);
+	return (i);
 }
 
 /**
@@ -121,21 +110,31 @@ char *_strdup(char *str)
  * Return: dest pointer
  */
 
+/**
+ * _strcat - concatenates two strings
+ * @dest: string to append to
+ * @src: string to add
+ *
+ * Return: a pointer to the resulting string
+ */
 char *_strcat(char *dest, char *src)
 {
-	char *p = dest;
+	int i, j;
 
-	while (*p != '\0')
-		p++;
+	i = 0;
+	j = 0;
 
-	while (*src != '\0')
+	while (dest[i] != '\0')
+		i++;
+
+	while (src[j] != '\0')
 	{
-		*p = *src;
-		src++;
-		p++;
+		dest[i] = src[j];
+		j++;
+		i++;
 	}
 
-	*p = '\0';
+	dest[i] = '\0';
 
 	return (dest);
 }

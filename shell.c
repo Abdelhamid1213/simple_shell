@@ -11,7 +11,7 @@ int main(int ac, char **av)
 {
 	char *line = NULL;
 	char **command = NULL;
-	int status = 0;
+	int status = 0, index = 0;
 	(void)ac;
 
 	while (1)
@@ -23,12 +23,13 @@ int main(int ac, char **av)
 				write(STDOUT_FILENO, "\n", 1);
 			return (status);
 		}
-
+		index++;
+		
 		command = tokenize(line);
 		if (command == NULL)
 			continue;
 
-		status = exec(command, av);
+		status = exec(command, av, index);
 	}
 	return (0);
 }
