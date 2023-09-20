@@ -101,14 +101,6 @@ char *_strdup(char *str)
 	return (copy);
 }
 
-/**
- * _strcat - a function that concatenates two strings.
- *
- * @dest: destination string
- * @src: source string
- *
- * Return: dest pointer
- */
 
 /**
  * _strcat - concatenates two strings

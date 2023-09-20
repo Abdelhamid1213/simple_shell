@@ -72,6 +72,7 @@ char **tokenize(char *line)
  * exec - ..
  * @command: ..
  * @av: ..
+ * @index: ..
  * Return: ..
  */
 

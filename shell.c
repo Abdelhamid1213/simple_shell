@@ -24,7 +24,7 @@ int main(int ac, char **av)
 			return (status);
 		}
 		index++;
-		
+
 		command = tokenize(line);
 		if (command == NULL)
 			continue;
