@@ -28,8 +28,10 @@ int main(int ac, char **av)
 		command = tokenize(line);
 		if (command == NULL)
 			continue;
-
-		status = exec(command, av, index);
+		if (builtin(command[0]))
+			handle_builtin(command, av, &status, index);
+		else
+			status = exec(command, av, index);
 	}
 	return (0);
 }

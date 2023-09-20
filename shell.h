@@ -13,6 +13,12 @@
 
 extern char **environ;
 
+/* builtin.c */
+int builtin(char *command);
+void handle_builtin(char **command, char **av, int *status, int index);
+void shellexit(char **command, int *status);
+void p_env(char **command, int *status);
+
 /* env.c */
 char *_getenv(char *var);
 char *_getpath(char *command);
